@@ -12,7 +12,7 @@ class ApiProvidor{
   Future<dynamic> get(String path) async {
     var responseJson;
     try {
-      final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/"+path));
+      final response = await http.get(Uri.parse(_baseUrl + path));
       responseJson = _response(response); // structure list&map
     } on SocketException {
       throw Exception('No Internet connection');

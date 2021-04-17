@@ -1,29 +1,24 @@
-
-
-class Note{
+class Note {
   // final int userId;
   final int id;
   String title;
   String body;
-  Note( {this.id, this.title, this.body} );
+  Note({this.id, this.title, this.body});
 
   factory Note.fromJson(Map<String, dynamic> jsonMap) {
     return Note(
         id: jsonMap['id'],
         title: jsonMap['title'],
-        body: jsonMap['body']
-    );
+        body: jsonMap['description']);
   }
 
   static List<Note> listFromJson(List jsonList) {
     return jsonList.map((e) => Note.fromJson(e)).toList();
   }
 
-  String toString(){
+  String toString() {
     return "<Note> _ id: $id , title: $title , body: $body";
   }
-
-
 }
 
 // //test

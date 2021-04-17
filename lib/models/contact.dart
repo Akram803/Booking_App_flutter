@@ -1,30 +1,25 @@
 //
 
-class Contact{
+class Contact {
   // final int userId;
   final int id;
   String name;
   String email;
   String imageUrl;
-  Contact( {this.id, this.name, this.email, this.imageUrl} );
+  Contact({this.id, this.name, this.email, this.imageUrl});
 
   factory Contact.fromJson(Map<String, dynamic> jsonMap) {
     return Contact(
-        id: jsonMap['id'],
-        name: jsonMap['name'],
-        email: jsonMap['email']
-    );
+        id: jsonMap['id'], name: jsonMap['name'], email: jsonMap['mail']);
   }
 
   static List<Contact> listFromJson(List jsonList) {
     return jsonList.map((e) => Contact.fromJson(e)).toList();
   }
 
-  String toString(){
+  String toString() {
     return "<Contact> _ id: $id , name: $name , email: $email";
   }
-
-
 }
 
 // //test

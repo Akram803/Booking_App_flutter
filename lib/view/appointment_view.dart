@@ -9,7 +9,7 @@ import 'package:task_app/view/common.dart';
 
 import 'package:task_app/view/common.dart';
 
-EventBloc _bloc ;//= EventBloc();
+EventBloc _bloc; //= EventBloc();
 
 class AppointmentView extends StatefulWidget {
   @override
@@ -17,7 +17,6 @@ class AppointmentView extends StatefulWidget {
 }
 
 class _AppointmentViewState extends State<AppointmentView> {
-
   @override
   void initState() {
     super.initState();
@@ -27,35 +26,32 @@ class _AppointmentViewState extends State<AppointmentView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Response<List<Event>>>(
-          stream: _bloc.eventListStream,
-          builder: (context, snapshot){
-            if (snapshot.hasData){  // always has our response obj
-              switch (snapshot.data.status) {
-                case Status.LOADING:
-                  return Loading(loadingMessage: snapshot.data.message);
-                  break;
-                case Status.COMPLETED:
+        stream: _bloc.eventListStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // always has our response obj
+            switch (snapshot.data.status) {
+              case Status.LOADING:
+                return Loading(loadingMessage: snapshot.data.message);
+                break;
+              case Status.COMPLETED:
                 return CalendarView();
-                  break;
-                case Status.ERROR:
-                  return Error(
-                    errorMessage: snapshot.data.message,
-                    onRetryPressed: () => _bloc.fetchEvents(),
-                  );
-                  break;
-              }
+                break;
+              case Status.ERROR:
+                return Error(
+                  errorMessage: snapshot.data.message,
+                  onRetryPressed: () => _bloc.fetchEvents(),
+                );
+                break;
             }
-            return Container(
-              child: Center(
-                child: Text("Fucken Internal Error"),
-              ),
-            );
-            // return Loading(loadingMessage: 'snapshot.data.message');
-
           }
-
-    );
-
+          return Container(
+            child: Center(
+              child: Text("Fucken Internal Error"),
+            ),
+          );
+          // return Loading(loadingMessage: 'snapshot.data.message');
+        });
   }
 }
 
@@ -65,7 +61,6 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-
   // late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -80,9 +75,9 @@ class _CalendarViewState extends State<CalendarView> {
 
   List<Event> _selectedEvents;
 
-  List<Event> _getEventsForDay(DateTime date){
+  List<Event> _getEventsForDay(DateTime date) {
     String key = "${date.year}${date.month}${date.day}";
-    return _bloc.events[key] ?? [] ;
+    return _bloc.events[key] ?? [];
   }
 
   @override
@@ -92,7 +87,8 @@ class _CalendarViewState extends State<CalendarView> {
       lastDay: DateTime.utc(2021, 12, 30),
       focusedDay: _focusedDay,
 
-      selectedDayPredicate: (day) { //for each day in calendar
+      selectedDayPredicate: (day) {
+        //for each day in calendar
         return isSameDay(_selectedDay, day);
       },
       onDaySelected: (selectedDay, focusedDay) {
@@ -108,24 +104,22 @@ class _CalendarViewState extends State<CalendarView> {
               return ListView(
                 // height: MediaQuery.of(context).size.height,
                 // color: Colors.amber,
-                  padding: EdgeInsets.all(10),
-                  children: [
+                padding: EdgeInsets.all(10),
+                children: [
+                  ListTile(
+                    title: Text(_format.format(_selectedDay)),
+                  ),
+                  for (var ev in _selectedEvents)
                     ListTile(
-                      title: Text(_format.format(_selectedDay)),
-                    ),
-                    for(var ev in _selectedEvents)
-                      ListTile(
-                        title: Text(ev.title),
-                        subtitle: Text(ev.time.toString()),
-                        tileColor: Colors.black12,
-                      )
-                  ],
+                      title: Text(ev.title),
+                      subtitle: Text(ev.date.toString()),
+                      tileColor: Colors.black12,
+                    )
+                ],
               );
             },
-
           );
         });
-
       },
 
       calendarFormat: _calendarFormat,
@@ -140,12 +134,10 @@ class _CalendarViewState extends State<CalendarView> {
         _focusedDay = focusedDay;
       },
 
-      eventLoader: (day) { // for each day in
-        return _getEventsForDay(day);  // my defined func
+      eventLoader: (day) {
+        // for each day in
+        return _getEventsForDay(day); // my defined func
       },
-
     );
   }
 }
-
-

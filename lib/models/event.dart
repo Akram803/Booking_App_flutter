@@ -1,30 +1,26 @@
-
-
-class Event{
+class Event {
   // final int userId;
   final int id;
   String title;
   String description;
-  DateTime time;
-  Event({this.id, this.title, this.description, this.time});
+  DateTime date;
+  Event({this.id, this.title, this.description, this.date});
 
   factory Event.fromJson(Map<String, dynamic> jsonMap) {
     return Event(
         id: jsonMap['id'],
         title: jsonMap['title'],
-        description: jsonMap['description'],
-        time: jsonMap['time']
-    );
+        // description: jsonMap['description'],
+        date: jsonMap['date']);
   }
 
   static List<Event> listFromJson(List jsonList) {
     return jsonList.map((e) => Event.fromJson(e)).toList();
   }
 
-  String toString(){
-    return "<Event> _ id: $id , title: $title , description: $description , time: $time";
+  String toString() {
+    return "<Event> _ id: $id , title: $title , description: $description , time: $date";
   }
-
 }
 
 // //test
